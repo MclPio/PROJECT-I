@@ -67,3 +67,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'google-apis-calendar_v3', '~> 0.5.0'
+
+gem 'figaro'
