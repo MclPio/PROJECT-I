@@ -71,3 +71,5 @@ end
 gem 'google-apis-calendar_v3', '~> 0.5.0'
 
 gem 'figaro'
+
+gem 'cssbundling-rails'
