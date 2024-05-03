@@ -17,7 +17,7 @@
       <%= link_to "Home", root_path, class: "navbar-item"%>
 
       <a class="navbar-item">
-        Documentation
+        Features
       </a>
 
       <div class="navbar-item has-dropdown is-hoverable">
@@ -27,13 +27,13 @@
 
         <div class="navbar-dropdown">
           <a class="navbar-item">
+            Pricing
+          </a>
+          <a class="navbar-item">
+            FAQs
+          </a>
+          <a class="navbar-item">
             About
-          </a>
-          <a class="navbar-item">
-            Jobs
-          </a>
-          <a class="navbar-item">
-            Contact
           </a>
           <hr class="navbar-divider">
           <a class="navbar-item">
@@ -46,11 +46,17 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <%= link_to new_user_registration_path, class: "button is-primary" do %>
-            <strong>Sign up</strong> 
-          <% end %>
-          <%= link_to new_user_session_path, class: "button is-light" do %>
-            <strong>Log in</strong> 
+          <% if user_signed_in? %>
+            <%= button_to destroy_user_session_path, method: :delete, class: 'button is-light' do %>
+              <strong>Sign out</strong>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_registration_path, class: "button is-primary" do %>
+              <strong>Sign up</strong> 
+            <% end %>
+            <%= link_to new_user_session_path, class: "button is-light" do %>
+              <strong>Log in</strong> 
+            <% end %>
           <% end %>
         </div>
       </div>
