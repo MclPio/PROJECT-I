@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root 'pages#home'
+  root 'calendars#home'
   get "/redirect", to: "calendars#redirect", as: 'redirect'
   get "/callback", to: "calendars#callback", as: 'callback'
   get '/calendars', to: 'calendars#calendars', as: 'calendars'
