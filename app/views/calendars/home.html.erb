@@ -8,5 +8,7 @@ Else if calendar is connected:
 </div>
 
 <h1>Create New Calendar</h1>
-<%= link_to 'Create Calendar', insert_calendar_path, method: :post, class: 'btn btn-primary' %>
-<%= @calendar_list %>
+<%= link_to 'Create Calendar', insert_calendar_path, method: :post, class: 'button is-link' %>
+
+<h1>Calendar Show</h1>
+<%= link_to 'Calendar Show', calendars_show_path, method: :get, class: 'button is-link' %>

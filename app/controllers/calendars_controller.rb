@@ -21,23 +21,32 @@ class CalendarsController < ApplicationController
     redirect_to root_path
   end
 
-  # def calendars
-  #   client = Signet::OAuth2::Client.new(client_options)
-  #   client.update!(session[:authorization])
+  def show
+    refresh_token = current_user.refresh_token
 
-  #   service = Google::Apis::CalendarV3::CalendarService.new
-  #   service.authorization = client
+    client = Signet::OAuth2::Client.new(
+      token_credential_uri: "https://oauth2.googleapis.com/token",
+      client_id: Figaro.env.google_client_id,
+      client_secret: Figaro.env.google_client_secret,
+      refresh_token: refresh_token
+    )
 
-  #   @calendar_list = service.list_calendar_lists
+    client.refresh!
 
-  #   #Example implementation of refreshing access token
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client
+
+    @calendar_list = service.get_calendar('need to store result.id to access created calendar')
+    puts "----------------------------------------------_>>>>>>>#{@calendar_list}"
+
+    #Example implementation of refreshing access token
   # rescue Google::Apis::AuthorizationError
   #   response = client.refresh!
 
   #   session[:authorization] = session[:authorization].merge(response)
 
   #   retry
-  # end
+  end
 
   def insert
     refresh_token = current_user.refresh_token
