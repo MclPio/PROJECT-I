@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   get '/calendars', to: 'calendars#calendars', as: 'calendars'
   get '/events/:calendar_id', to: 'calendars#events', as: 'events', calendar_id: /[^\/]+/
   post '/events/:calendar_id', to: 'calendars#new_event', as: 'new_event', calendar_id: /[^\/]+/
+  get '/calendars/insert', to: 'calendars#insert', as: 'insert_calendar'
 end

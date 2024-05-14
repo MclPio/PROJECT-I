@@ -39,8 +39,30 @@ class CalendarsController < ApplicationController
   #   retry
   # end
 
-  def create
+  def insert
+    refresh_token = current_user.refresh_token
 
+    client = Signet::OAuth2::Client.new(
+      token_credential_uri: "https://oauth2.googleapis.com/token",
+      client_id: Figaro.env.google_client_id,
+      client_secret: Figaro.env.google_client_secret,
+      refresh_token: refresh_token
+    )
+
+    client.refresh!
+
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client
+
+    calendar = Google::Apis::CalendarV3::Calendar.new(
+      summary: 'calendarSummary',
+      time_zone: 'Canada/Eastern'
+    )
+
+    result = service.insert_calendar(calendar)
+    puts "New calendar ID: #{result.id}"
+
+    redirect_to root_path
   end
 
   private
