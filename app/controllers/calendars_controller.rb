@@ -14,11 +14,10 @@ class CalendarsController < ApplicationController
     client.code = params[:code]
 
     response = client.fetch_access_token!
-    print("-->#{response}")
     # response contains (access_token, expires_in, refresh_token, token_type, granted scopes)
     # need to replace signet with google oauth2 omni auth strategy....
     session[:authorization] = response
-
+    store_refresh_token(response["refresh_token"])
     redirect_to root_path
   end
 
@@ -40,6 +39,10 @@ class CalendarsController < ApplicationController
   #   retry
   # end
 
+  def create
+
+  end
+
   private
 
   def client_options
@@ -51,5 +54,10 @@ class CalendarsController < ApplicationController
       scope: 'https://www.googleapis.com/auth/calendar.app.created',
       redirect_uri: callback_url
     }
+  end
+
+  def store_refresh_token(refresh_token)
+    current_user.update(refresh_token: refresh_token)
+    puts "_----------> REFRESh TOKEN STORED"
   end
 end
