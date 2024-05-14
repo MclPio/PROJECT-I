@@ -77,3 +77,9 @@ gem 'cssbundling-rails'
 gem "devise", "~> 4.9"
 
 gem "letter_opener", group: :development
+
+gem 'omniauth'
+
+gem "omniauth-rails_csrf_protection"
+
+gem 'omniauth-google-oauth2'

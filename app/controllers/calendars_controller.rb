@@ -6,7 +6,7 @@ class CalendarsController < ApplicationController
 
   def redirect
     client = Signet::OAuth2::Client.new(client_options)
-    redirect_to(client.authorization_uri.to_s, allow_other_host: true)
+    redirect_to(client.authorization_uri, allow_other_host: true)
   end
 
   def callback
@@ -14,7 +14,9 @@ class CalendarsController < ApplicationController
     client.code = params[:code]
 
     response = client.fetch_access_token!
-    print("test output ------->#{client}")
+    print("-->#{response}")
+    # response contains (access_token, expires_in, refresh_token, token_type, granted scopes)
+    # need to replace signet with google oauth2 omni auth strategy....
     session[:authorization] = response
 
     redirect_to root_path
@@ -42,10 +44,10 @@ class CalendarsController < ApplicationController
 
   def client_options
     {
-      client_id: Figaro.env.google_client_id,
-      client_secret: Figaro.env.google_client_secret,
       authorization_uri: "https://accounts.google.com/o/oauth2/auth",
       token_credential_uri: "https://oauth2.googleapis.com/token",
+      client_id: Figaro.env.google_client_id,
+      client_secret: Figaro.env.google_client_secret,
       scope: 'https://www.googleapis.com/auth/calendar.app.created',
       redirect_uri: callback_url
     }
