@@ -1,0 +1,14 @@
+If calendar is not connected:
+  Connect to Google calendar
+Else if calendar is connected:
+  Show current goal!
+
+<div class="section">
+  <%= link_to "Connect to Google Calendar", redirect_path, class: "button is-link" %>
+</div>
+
+<h1>Create New Calendar</h1>
+<%= link_to 'Create Calendar', insert_calendar_path, method: :post, class: 'button is-link' %>
+
+<h1>Calendar Show</h1>
+<%= link_to 'Calendar Show', calendars_show_path, method: :get, class: 'button is-link' %>

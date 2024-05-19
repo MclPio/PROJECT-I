@@ -1,0 +1,65 @@
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <strong>PROJECT-I</strong>
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <%= link_to "Home", root_path, class: "navbar-item"%>
+
+      <a class="navbar-item">
+        Features
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Pricing
+          </a>
+          <a class="navbar-item">
+            FAQs
+          </a>
+          <a class="navbar-item">
+            About
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <% if user_signed_in? %>
+            <%= button_to destroy_user_session_path, method: :delete, class: 'button is-light' do %>
+              <strong>Sign out</strong>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_registration_path, class: "button is-primary" do %>
+              <strong>Sign up</strong> 
+            <% end %>
+            <%= link_to new_user_session_path, class: "button is-light" do %>
+              <strong>Log in</strong> 
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
