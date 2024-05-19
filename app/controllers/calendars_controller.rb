@@ -15,7 +15,6 @@ class CalendarsController < ApplicationController
 
     response = client.fetch_access_token!
     # response contains (access_token, expires_in, refresh_token, token_type, granted scopes)
-    # need to replace signet with google oauth2 omni auth strategy....
     session[:authorization] = response
     store_refresh_token(response["refresh_token"])
     redirect_to root_path

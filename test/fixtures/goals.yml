@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  duration: 14
+  completed: false
+  user: one
+
+two:
+  name: MyString
+  duration: 30
+  completed: true
+  user: two

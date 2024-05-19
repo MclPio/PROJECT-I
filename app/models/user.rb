@@ -6,4 +6,6 @@ class User < ApplicationRecord
          :lockable, :confirmable
 
   encrypts :refresh_token
+
+  has_many :goals
 end
