@@ -21,44 +21,16 @@ class CalendarsController < ApplicationController
   end
 
   def show
-    refresh_token = current_user.refresh_token
-
-    client = Signet::OAuth2::Client.new(
-      token_credential_uri: "https://oauth2.googleapis.com/token",
-      client_id: Figaro.env.google_client_id,
-      client_secret: Figaro.env.google_client_secret,
-      refresh_token: refresh_token
-    )
-
-    client.refresh!
-
+    client = authorize
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = client
 
-    @calendar_list = service.get_calendar('need to store result.id to access created calendar')
-    puts "----------------------------------------------_>>>>>>>#{@calendar_list}"
-
-    #Example implementation of refreshing access token
-  # rescue Google::Apis::AuthorizationError
-  #   response = client.refresh!
-
-  #   session[:authorization] = session[:authorization].merge(response)
-
-  #   retry
+    @calendar_list = service.get_calendar('primary')
+    puts "Calendar List: #{@calendar_list}"
   end
 
   def insert
-    refresh_token = current_user.refresh_token
-
-    client = Signet::OAuth2::Client.new(
-      token_credential_uri: "https://oauth2.googleapis.com/token",
-      client_id: Figaro.env.google_client_id,
-      client_secret: Figaro.env.google_client_secret,
-      refresh_token: refresh_token
-    )
-
-    client.refresh!
-
+    client = authorize
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = client
 
@@ -77,17 +49,40 @@ class CalendarsController < ApplicationController
 
   def client_options
     {
-      authorization_uri: "https://accounts.google.com/o/oauth2/auth",
-      token_credential_uri: "https://oauth2.googleapis.com/token",
+      authorization_uri: 'https://accounts.google.com/o/oauth2/auth',
+      token_credential_uri: 'https://oauth2.googleapis.com/token',
       client_id: Figaro.env.google_client_id,
       client_secret: Figaro.env.google_client_secret,
       scope: 'https://www.googleapis.com/auth/calendar.app.created',
-      redirect_uri: callback_url
+      redirect_uri: callback_url,
+      additional_parameters: {
+        'access_type' => 'offline',
+        'include_granted_scopes' => 'true'
+      }
     }
   end
 
   def store_refresh_token(refresh_token)
     current_user.update(refresh_token: refresh_token)
-    puts "_----------> REFRESh TOKEN STORED"
+    puts 'REFRESH TOKEN STORED'
+  end
+
+  def authorize
+    refresh_token = current_user.refresh_token
+
+    client = Signet::OAuth2::Client.new(
+      token_credential_uri: 'https://oauth2.googleapis.com/token',
+      client_id: Figaro.env.google_client_id,
+      client_secret: Figaro.env.google_client_secret,
+      refresh_token: refresh_token
+    )
+
+    begin
+      client.refresh!
+    rescue Signet::AuthorizationError
+      redirect_to(client.authorization_uri, allow_other_host: true)
+    end
+
+    client
   end
 end
