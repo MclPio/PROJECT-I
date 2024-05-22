@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_19_014049) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_22_195654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "calendars", force: :cascade do |t|
+    t.string "calendar_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calendar_id"], name: "index_calendars_on_calendar_id", unique: true
+    t.index ["user_id"], name: "index_calendars_on_user_id"
+  end
 
   create_table "goals", force: :cascade do |t|
     t.string "name", null: false
@@ -46,5 +55,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_014049) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "calendars", "users"
   add_foreign_key "goals", "users"
 end

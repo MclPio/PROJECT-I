@@ -25,8 +25,7 @@ class CalendarsController < ApplicationController
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = client
 
-    @calendar_list = service.get_calendar('primary')
-    puts "Calendar List: #{@calendar_list}"
+    @calendar = service.get_calendar(current_user.calendar.calendar_id)
   end
 
   def insert

@@ -8,4 +8,5 @@ class User < ApplicationRecord
   encrypts :refresh_token
 
   has_many :goals
+  has_one :calendar, dependent: :destroy
 end
