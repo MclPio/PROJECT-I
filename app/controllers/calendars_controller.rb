@@ -24,8 +24,12 @@ class CalendarsController < ApplicationController
     client = authorize
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = client
-
-    @calendar = service.get_calendar(current_user.calendar.calendar_id)
+    begin
+      @calendar = service.get_calendar('12122')
+    rescue Google::Apis::ClientError
+      flash[:notice] = "calendar not found"
+      redirect_to root_path
+    end
   end
 
   def insert
@@ -39,7 +43,9 @@ class CalendarsController < ApplicationController
     )
 
     result = service.insert_calendar(calendar)
+    current_user.calendar
     puts "New calendar ID: #{result.id}"
+    current_user.create_calendar(calendar_id: result.id)
 
     redirect_to root_path
   end
